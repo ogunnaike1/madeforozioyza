@@ -1,13 +1,7 @@
 "use client";
 import { PrimaryButton } from "@/components/Buttons";
-import { VideoCard } from "@/components/VideoCard";
 import { STORY } from "@/lib/data";
 import { Reveal, SectionHead, SectionBody } from "./StoryUtils";
-
-const BAD_VIDEOS = [
-  "https://res.cloudinary.com/dhmqhless/video/upload/f_mp4,vc_h264,q_auto:low,w_360,br_400k/v1780325537/kanyin-16_s2buix.mp4",
-  "https://res.cloudinary.com/dhmqhless/video/upload/f_mp4,vc_h264,q_auto:low,w_360,br_400k/v1780326118/kanyin-17_tbc9hp.mp4",
-];
 
 export function Bad({ onNext }: { onNext: () => void }) {
   const bad    = STORY[3];
@@ -19,22 +13,6 @@ export function Bad({ onNext }: { onNext: () => void }) {
         <section className="story-sec">
           <SectionHead s={bad} />
           <SectionBody s={bad} />
-
-          <div className="video-block">
-            <Reveal className="photo-note-wrap">
-              <p className="ff-script photo-note"></p>
-            </Reveal>
-            <div className="video-grid">
-              {BAD_VIDEOS.map((url, i) => (
-                <VideoCard
-                  key={i}
-                  src={url}
-                  idx={i}
-                  label={i === 0 ? "through it all 🌧️" : "still standing 💪🏾"}
-                />
-              ))}
-            </div>
-          </div>
         </section>
 
         <section className="story-sec">

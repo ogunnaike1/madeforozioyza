@@ -1,6 +1,8 @@
 "use client";
 import { useRef, useEffect } from "react";
 
+type Shape = "heart" | "star" | "sparkle" | "circle";
+
 interface Particle {
   x: number;
   y: number;
@@ -10,9 +12,12 @@ interface Particle {
   rot: number;
   vr: number;
   color: string;
-  heart: boolean;
+  shape: Shape;
   sway: number;
 }
+
+const COLORS = ["#ffffff", "#f4a7b9", "#f8c8d5", "#f7e0b0", "#fff8f0", "#fdeef3", "#e8849a", "#edd8e0"];
+const SHAPES: Shape[] = ["heart", "star", "sparkle", "circle"];
 
 export function Confetti({ run }: { run: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -34,8 +39,7 @@ export function Confetti({ run }: { run: boolean }) {
     size();
     window.addEventListener("resize", size);
 
-    const colors = ["#ff6b81", "#ffd0d8", "#f3d79b", "#e8c27a", "#b7a4e0", "#ffffff"];
-    const N = 160;
+    const N = 180;
 
     function spawn(initial: boolean): Particle {
       const w = canvas!.width, h = canvas!.height;
@@ -43,12 +47,12 @@ export function Confetti({ run }: { run: boolean }) {
         x: Math.random() * w,
         y: initial ? Math.random() * h - h : -20 * DPR,
         vx: (Math.random() - 0.5) * 1.6 * DPR,
-        vy: (1.4 + Math.random() * 2.6) * DPR,
-        s: (5 + Math.random() * 7) * DPR,
-        rot: Math.random() * Math.PI,
-        vr: (Math.random() - 0.5) * 0.2,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        heart: Math.random() < 0.32,
+        vy: (1.2 + Math.random() * 2.4) * DPR,
+        s: (5 + Math.random() * 8) * DPR,
+        rot: Math.random() * Math.PI * 2,
+        vr: (Math.random() - 0.5) * 0.18,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
         sway: Math.random() * Math.PI * 2,
       };
     }
@@ -73,23 +77,66 @@ export function Confetti({ run }: { run: boolean }) {
       ctx!.restore();
     }
 
+    function drawStar(x: number, y: number, s: number, rot: number, color: string) {
+      ctx!.save();
+      ctx!.translate(x, y);
+      ctx!.rotate(rot);
+      ctx!.fillStyle = color;
+      ctx!.beginPath();
+      for (let i = 0; i < 5; i++) {
+        const outer = (Math.PI * 2 * i) / 5 - Math.PI / 2;
+        const inner = outer + Math.PI / 5;
+        if (i === 0) ctx!.moveTo(Math.cos(outer) * s, Math.sin(outer) * s);
+        else ctx!.lineTo(Math.cos(outer) * s, Math.sin(outer) * s);
+        ctx!.lineTo(Math.cos(inner) * s * 0.42, Math.sin(inner) * s * 0.42);
+      }
+      ctx!.closePath();
+      ctx!.fill();
+      ctx!.restore();
+    }
+
+    function drawSparkle(x: number, y: number, s: number, rot: number, color: string) {
+      ctx!.save();
+      ctx!.translate(x, y);
+      ctx!.rotate(rot);
+      ctx!.fillStyle = color;
+      ctx!.beginPath();
+      for (let i = 0; i < 4; i++) {
+        const a = (Math.PI / 2) * i;
+        const b = a + Math.PI / 4;
+        if (i === 0) ctx!.moveTo(Math.cos(a) * s, Math.sin(a) * s);
+        else ctx!.lineTo(Math.cos(a) * s, Math.sin(a) * s);
+        ctx!.lineTo(Math.cos(b) * s * 0.22, Math.sin(b) * s * 0.22);
+      }
+      ctx!.closePath();
+      ctx!.fill();
+      ctx!.restore();
+    }
+
+    function drawCircle(x: number, y: number, s: number, color: string) {
+      ctx!.save();
+      ctx!.fillStyle = color;
+      ctx!.globalAlpha = 0.85;
+      ctx!.beginPath();
+      ctx!.arc(x, y, s * 0.5, 0, Math.PI * 2);
+      ctx!.fill();
+      ctx!.restore();
+    }
+
     function frame() {
       ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
       parts.forEach((p) => {
         p.sway += 0.02;
-        p.x += p.vx + Math.sin(p.sway) * 0.6 * DPR;
+        p.x += p.vx + Math.sin(p.sway) * 0.55 * DPR;
         p.y += p.vy;
         p.rot += p.vr;
         if (p.y > canvas!.height + 30 * DPR) Object.assign(p, spawn(false));
-        if (p.heart) {
-          drawHeart(p.x, p.y, p.s * 1.4, p.rot, p.color);
-        } else {
-          ctx!.save();
-          ctx!.translate(p.x, p.y);
-          ctx!.rotate(p.rot);
-          ctx!.fillStyle = p.color;
-          ctx!.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * 0.6);
-          ctx!.restore();
+
+        switch (p.shape) {
+          case "heart":    drawHeart(p.x, p.y, p.s * 1.3, p.rot, p.color); break;
+          case "star":     drawStar(p.x, p.y, p.s, p.rot, p.color); break;
+          case "sparkle":  drawSparkle(p.x, p.y, p.s, p.rot, p.color); break;
+          case "circle":   drawCircle(p.x, p.y, p.s, p.color); break;
         }
       });
       raf = requestAnimationFrame(frame);

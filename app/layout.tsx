@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "For Kanyin 💖",
+  title: "For Ozi Oyza 💖",
   description: "A surprise birthday experience, made just for you.",
 };
 

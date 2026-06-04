@@ -24,8 +24,8 @@ export function Landing({ onNext }: { onNext: () => void }) {
           custom={0}
           variants={item}
         >
-          Hey… I have<br />something for you
-          <span className="hook-heart"> ❤️</span>
+          This one&apos;s<br />for you, Ozi Oyza
+          <span className="hook-heart"> 💜</span>
         </motion.h1>
         <motion.div custom={1} variants={item}>
           <PrimaryButton onClick={onNext}>Click to begin</PrimaryButton>

@@ -13,13 +13,10 @@ export function CinematicVideo({ src }: { src: string }) {
     const el = wrapRef.current;
     if (!el) return;
 
-    // Preload src when 1200px away
     const preloadObserver = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setActiveSrc(src); preloadObserver.disconnect(); } },
       { rootMargin: "1200px", threshold: 0 }
     );
-
-    // Play/pause when in view
     const playObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setEntered(true);
@@ -36,70 +33,73 @@ export function CinematicVideo({ src }: { src: string }) {
   useEffect(() => {
     const v = videoRef.current;
     if (!v || !activeSrc) return;
-    if (inView) {
-      v.play().catch(() => {});
-    } else {
-      v.pause();
-      v.currentTime = 0;
-    }
+    if (inView) { v.play().catch(() => {}); }
+    else { v.pause(); v.currentTime = 0; }
   }, [inView, activeSrc]);
 
   return (
     <motion.div
       ref={wrapRef}
       className="cv-outer"
-      initial={{ opacity: 0, y: 50, rotateX: -10, scale: 0.94 }}
-      animate={entered ? { opacity: 1, y: 0, rotateX: 0, scale: 1 } : {}}
-      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-      style={{ perspective: 900 }}
-      whileHover={{ scale: 1.025 }}
+      initial={{ opacity: 0, y: 80, scale: 0.9, filter: "blur(14px)" }}
+      animate={entered ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" } : {}}
+      transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -6, scale: 1.02 }}
+      style={{ perspective: 1000 }}
     >
+      {/* ambient bloom behind the frame */}
       <motion.div
-        className="cv-glow-border"
-        animate={{ opacity: inView ? 1 : 0 }}
-        transition={{ duration: 0.5 }}
+        className="cv-bloom"
+        animate={{
+          opacity: inView ? [0.5, 0.9, 0.5] : 0,
+          scale: inView ? [1, 1.08, 1] : 0.9,
+        }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="cv-frame">
-        {activeSrc && (
+      {/* elegant border frame */}
+      <motion.div
+        className="cv-border"
+        animate={{ opacity: inView ? 1 : 0.3 }}
+        transition={{ duration: 0.8 }}
+      />
+
+      <div className="cv-frame" style={{ position: "relative" }}>
+        {activeSrc ? (
           <video
             ref={videoRef}
             src={activeSrc}
-            loop
-            muted
-            playsInline
-            preload="auto"
+            loop muted playsInline preload="auto"
             crossOrigin="anonymous"
             className="cv-video"
           />
+        ) : (
+          <div style={{ width: "100%", aspectRatio: "9/16", background: "rgba(0,0,0,0.4)" }} />
         )}
 
-        <div className="cv-grain" aria-hidden="true" />
+        {/* soft inner glow overlay */}
+        <div className="cv-inner-glow" aria-hidden="true" />
 
-        <motion.div
-          className="cv-bar cv-bar-top"
-          animate={{ scaleY: inView ? 0 : 1 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        />
-        <motion.div
-          className="cv-bar cv-bar-bottom"
-          animate={{ scaleY: inView ? 0 : 1 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        />
-
+        {/* play overlay */}
         <motion.div
           className="cv-overlay"
           animate={{ opacity: inView && activeSrc ? 0 : 1 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.5 }}
         >
           <motion.div
             className="cv-play"
-            animate={{ scale: [1, 1.06, 1] }}
-            transition={{ repeat: Infinity, duration: 2.4, ease: "easeInOut" }}
+            animate={{ scale: [1, 1.08, 1], opacity: [0.85, 1, 0.85] }}
+            transition={{ repeat: Infinity, duration: 2.6, ease: "easeInOut" }}
           >
             <span className="cv-play-icon">▶</span>
           </motion.div>
-          <p className="ff-script cv-play-label">our story</p>
+          <motion.p
+            className="ff-script cv-play-label"
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ repeat: Infinity, duration: 2.6, ease: "easeInOut" }}
+          >
+            just her 🌸
+          </motion.p>
         </motion.div>
 
         <div className="cv-vignette" />
@@ -107,10 +107,11 @@ export function CinematicVideo({ src }: { src: string }) {
 
       <motion.p
         className="ff-script cv-caption"
-        animate={{ opacity: inView ? 1 : 0.45, y: inView ? 0 : 6 }}
-        transition={{ duration: 0.35 }}
+        initial={{ opacity: 0, y: 12 }}
+        animate={entered ? { opacity: inView ? 1 : 0.4, y: 0 } : { opacity: 0, y: 12 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
       >
-        a little piece of time, saved forever 🎞️
+        unbothered & beautiful 🎞️
       </motion.p>
     </motion.div>
   );
