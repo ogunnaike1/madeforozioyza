@@ -3,10 +3,12 @@ import { motion } from "framer-motion";
 import { PhotoFrame } from "@/components/PhotoFrame";
 import { StorySection } from "@/lib/data";
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 export function Reveal({
   children,
   delay = 0,
-  y = 28,
+  y = 24,
   className = "",
 }: {
   children: React.ReactNode;
@@ -19,8 +21,8 @@ export function Reveal({
       className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.8, delay }}
+      viewport={{ once: true, amount: 0.4 }}
+      transition={{ duration: 0.85, delay, ease }}
     >
       {children}
     </motion.div>
@@ -29,10 +31,11 @@ export function Reveal({
 
 export function SectionHead({ s }: { s: StorySection }) {
   return (
-    <div className="sec-head">
-      <Reveal><span className="sec-emoji">{s.emoji}</span></Reveal>
-      <Reveal delay={0.08}><p className="ff-script sec-kicker">{s.kicker}</p></Reveal>
-      <Reveal delay={0.16}><h2 className="ff-serif sec-title">{s.title}</h2></Reveal>
+    <div style={{ marginBottom: 36 }}>
+      <Reveal><span className="s-emoji">{s.emoji}</span></Reveal>
+      <Reveal delay={0.08}><span className="s-eyebrow">{s.kicker}</span></Reveal>
+      <Reveal delay={0.08}><div className="s-rule" /></Reveal>
+      {s.title && <Reveal delay={0.16}><h2 className="ff-serif s-title">{s.title}</h2></Reveal>}
     </div>
   );
 }
@@ -42,8 +45,8 @@ export function Paras({ list }: { list?: string[] }) {
   return (
     <>
       {list.map((p, i) => (
-        <Reveal key={i} delay={0.05 * i} className="para-wrap">
-          <p className="ff-body para">{p}</p>
+        <Reveal key={i} delay={0.05 * i}>
+          <p className="ff-body s-para">{p}</p>
         </Reveal>
       ))}
     </>
@@ -52,11 +55,10 @@ export function Paras({ list }: { list?: string[] }) {
 
 export function PullQuote({ children }: { children: React.ReactNode }) {
   return (
-    <Reveal className="pullquote-wrap">
-      <blockquote className="ff-serif pullquote">
-        <span className="q-mark">&ldquo;</span>
-        {children}
-      </blockquote>
+    <Reveal>
+      <div className="s-quote">
+        <p className="ff-serif s-quote-text">{children}</p>
+      </div>
     </Reveal>
   );
 }
@@ -70,13 +72,13 @@ export function SectionBody({ s }: { s: StorySection }) {
       {s.quote2 && <PullQuote>{s.quote2}</PullQuote>}
 
       {s.photos && (
-        <div className="photos-block">
+        <div className="s-media">
           {s.photoNote && (
-            <Reveal className="photo-note-wrap">
-              <p className="ff-script photo-note">{s.photoNote}</p>
+            <Reveal>
+              <span className="ff-script s-photo-note">{s.photoNote}</span>
             </Reveal>
           )}
-          <div className="photo-grid">
+          <div className="s-photo-grid">
             {s.photos.map((p, i) => (
               <PhotoFrame key={i} caption={p.caption} idx={i} src={p.src} />
             ))}
@@ -85,21 +87,23 @@ export function SectionBody({ s }: { s: StorySection }) {
       )}
 
       {s.wishlist && (
-        <div className="wishlist">
+        <div className="s-wishlist">
           {s.wishlist.map((w, i) => (
-            <Reveal key={i} delay={0.06 * i} className="wish-row">
-              <span className="wish-dot">✦</span>
-              <span className="ff-body wish-txt">{w}</span>
+            <Reveal key={i} delay={0.07 * i}>
+              <div className="s-wish">
+                <span className="s-wish-dot">✦</span>
+                <span className="ff-body s-wish-txt">{w}</span>
+              </div>
             </Reveal>
           ))}
         </div>
       )}
 
       {s.blessing && (
-        <div className="blessing">
+        <div className="s-blessing">
           {s.blessing.map((b, i) => (
-            <Reveal key={i} delay={0.08 * i}>
-              <p className="ff-serif blessing-line">{b}</p>
+            <Reveal key={i} delay={0.09 * i}>
+              <p className="ff-serif s-blessing-line">{b}</p>
             </Reveal>
           ))}
         </div>
@@ -107,7 +111,7 @@ export function SectionBody({ s }: { s: StorySection }) {
 
       {s.closing && (
         <Reveal>
-          <p className="ff-script closing-line">{s.closing}</p>
+          <span className="ff-script s-closing">{s.closing}</span>
         </Reveal>
       )}
     </>

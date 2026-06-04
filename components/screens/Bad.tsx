@@ -8,23 +8,23 @@ export function Bad({ onNext }: { onNext: () => void }) {
   const wishes = STORY[4];
 
   return (
-    <div className="screen story-screen">
-      <div className="story-inner">
-        <section className="story-sec">
+    <div className="story-screen">
+      <div className="story-body">
+        <section className="s-section">
           <SectionHead s={bad} />
           <SectionBody s={bad} />
         </section>
 
-        <section className="story-sec">
+        <section className="s-section">
           <SectionHead s={wishes} />
           <SectionBody s={wishes} />
         </section>
 
-        <section className="story-sec end-sec">
-          <Reveal>
-            <p className="ff-body more-tease">but wait…</p>
+        <section className="s-section s-end">
+          <Reveal delay={0.05}>
+            <p className="s-more-note">but wait…</p>
           </Reveal>
-          <Reveal delay={0.1}>
+          <Reveal delay={0.15}>
             <PrimaryButton onClick={onNext}>There&apos;s more 👀</PrimaryButton>
           </Reveal>
         </section>

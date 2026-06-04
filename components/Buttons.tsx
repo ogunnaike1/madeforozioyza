@@ -13,14 +13,21 @@ export function PrimaryButton({ children, onClick, className = "", type = "butto
     <motion.button
       type={type}
       onClick={onClick}
-      className={"primary-btn ff-body " + className}
-      whileHover={{ scale: 1.04 }}
+      className={"btn-primary " + className}
+      whileHover="hover"
       whileTap={{ scale: 0.96 }}
-      initial={{ opacity: 0, y: 14 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2, duration: 0.6 }}
+      transition={{ duration: 0.6 }}
     >
-      <span>{children}</span>
+      <span className="btn-text">{children}</span>
+      <motion.span
+        className="btn-circle"
+        variants={{ hover: { x: 5, backgroundColor: "rgba(244,167,185,0.3)" } }}
+        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      >
+        →
+      </motion.span>
     </motion.button>
   );
 }
@@ -29,9 +36,8 @@ export function GhostButton({ children, onClick, className = "" }: ButtonProps) 
   return (
     <motion.button
       onClick={onClick}
-      className={"ghost-btn ff-body " + className}
-      whileHover={{ scale: 1.04 }}
-      whileTap={{ scale: 0.96 }}
+      className={"btn-ghost " + className}
+      whileTap={{ scale: 0.97 }}
     >
       {children}
     </motion.button>

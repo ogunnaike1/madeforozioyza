@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Glow } from "@/components/Glow";
 import { Petals } from "@/components/Petals";
 import { MusicButton } from "@/components/MusicButton";
 import { Landing } from "@/components/screens/Landing";
@@ -24,7 +23,7 @@ export function BirthdayApp() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("kanyin_step") as Step | null;
+    const saved = localStorage.getItem("ozi_step") as Step | null;
     if (saved && STEPS.includes(saved)) setStep(saved);
   }, []);
 
@@ -51,7 +50,7 @@ export function BirthdayApp() {
   }, [playing]);
 
   const go = useCallback((next: Step) => {
-    localStorage.setItem("kanyin_step", next);
+    localStorage.setItem("ozi_step", next);
     window.scrollTo({ top: 0, behavior: "auto" });
     setStep(next);
   }, []);
@@ -84,8 +83,7 @@ export function BirthdayApp() {
 
   return (
     <div className="app-root">
-      <Glow />
-      <Petals count={step === "final" ? 0 : 16} />
+      <Petals count={step === "final" ? 0 : 22} />
       <MusicButton playing={playing} visible={musicVisible} onToggle={toggleMusic} />
 
       <AnimatePresence mode="wait">
@@ -126,7 +124,7 @@ export function BirthdayApp() {
           onClick={() => {
             const a = audioRef.current;
             if (a) { a.pause(); setPlaying(false); }
-            localStorage.removeItem("kanyin_step");
+            localStorage.removeItem("ozi_step");
             go("landing");
           }}
         >

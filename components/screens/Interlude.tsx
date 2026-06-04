@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { GhostButton } from "@/components/Buttons";
 import { QUIZ } from "@/lib/data";
 
 type Phase = "quiz" | "gift" | "count";
+const ease = [0.22, 1, 0.36, 1] as const;
 
 export function Interlude({ onNext }: { onNext: () => void }) {
   const [phase, setPhase] = useState<Phase>("quiz");
@@ -21,23 +21,23 @@ export function Interlude({ onNext }: { onNext: () => void }) {
   }, [phase, count, onNext]);
 
   return (
-    <div className="screen center">
+    <div className="il-screen">
       <AnimatePresence mode="wait">
         {phase === "quiz" && (
           <motion.div
             key="quiz"
-            className="stack quiz-stack"
-            initial={{ opacity: 0, y: 20 }}
+            className="il-stack"
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
+            exit={{ opacity: 0, y: -24 }}
+            transition={{ duration: 0.6, ease }}
           >
-            <h2 className="ff-serif quiz-q">{QUIZ.question}</h2>
-            <div className="quiz-opts">
+            <h2 className="ff-serif il-question">{QUIZ.question}</h2>
+            <div className="il-opts">
               {QUIZ.options.map((o, i) => (
-                <GhostButton key={i} onClick={() => setPhase("gift")}>
+                <button key={i} className="btn-ghost" onClick={() => setPhase("gift")}>
                   {o}
-                </GhostButton>
+                </button>
               ))}
             </div>
           </motion.div>
@@ -46,37 +46,40 @@ export function Interlude({ onNext }: { onNext: () => void }) {
         {phase === "gift" && (
           <motion.div
             key="gift"
-            className="stack"
-            initial={{ opacity: 0, y: 20 }}
+            className="il-stack"
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 1.1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.55, ease }}
           >
-            <p className="ff-script tap-hint">tap the gift</p>
+            <p className="ff-serif il-tap">tap the gift</p>
             <motion.button
-              className="gift-btn"
+              className="il-gift"
               onClick={() => setPhase("count")}
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.9 }}
-              animate={{ rotate: [0, -6, 6, -6, 0] }}
-              transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
+              animate={{ rotate: [0, -5, 5, -5, 0], y: [0, -6, 0] }}
+              transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+              whileTap={{ scale: 0.88 }}
             >
               🎁
             </motion.button>
-            <p className="ff-body tiny-note">go on… 💗</p>
           </motion.div>
         )}
 
         {phase === "count" && (
-          <motion.div key="count" className="center-abs">
+          <motion.div
+            key="count"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
             <AnimatePresence mode="wait">
               <motion.span
                 key={count}
-                className="ff-serif countdown"
-                initial={{ opacity: 0, scale: 0.4 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.8 }}
-                transition={{ duration: 0.5 }}
+                className="ff-serif il-count"
+                initial={{ opacity: 0, scale: 0.5, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 1.6, y: -20 }}
+                transition={{ duration: 0.45, ease }}
               >
                 {count > 0 ? count : "♡"}
               </motion.span>

@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { PrimaryButton } from "@/components/Buttons";
 import { CONFIG } from "@/lib/data";
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 export function CodeGate({ onUnlock, onCorrect }: { onUnlock: () => void; onCorrect?: () => void }) {
   const [val, setVal] = useState("");
@@ -16,8 +17,8 @@ export function CodeGate({ onUnlock, onCorrect }: { onUnlock: () => void; onCorr
     if (guess === answer) {
       setOk(true);
       setErr(false);
-      onCorrect?.();           // fires immediately — inside the click gesture
-      setTimeout(onUnlock, 1100);
+      onCorrect?.();
+      setTimeout(onUnlock, 1000);
     } else {
       setErr(true);
       setTimeout(() => setErr(false), 600);
@@ -25,53 +26,87 @@ export function CodeGate({ onUnlock, onCorrect }: { onUnlock: () => void; onCorr
   };
 
   return (
-    <div className="screen center">
+    <div className="gate-screen">
       <motion.form
         onSubmit={submit}
-        className={"glass code-card " + (err ? "shake" : "")}
-        initial={{ opacity: 0, y: 30, scale: 0.96 }}
-        animate={
-          ok
-            ? { opacity: 0, scale: 1.05, filter: "blur(6px)", transition: { duration: 0.9 } }
-            : { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8 } }
+        className={"gate-inner " + (err ? "gate-shake" : "")}
+        initial={{ opacity: 0, y: 40 }}
+        animate={ok
+          ? { opacity: 0, y: -20, transition: { duration: 0.8 } }
+          : { opacity: 1, y: 0, transition: { duration: 0.9, ease } }
         }
       >
+        <motion.p
+          className="ff-script gate-greet"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.15, ease }}
+        >
+          Happy Birthday,
+        </motion.p>
+
+        <motion.p
+          className="ff-serif gate-name"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.3, ease }}
+        >
+          {CONFIG.fullName}
+        </motion.p>
+
         <motion.div
-          className="lock"
-          animate={ok ? { rotate: [0, -12, 0], scale: [1, 1.25, 1] } : {}}
-          transition={{ duration: 0.7 }}
+          className="gate-icon"
+          animate={ok ? { scale: [1, 1.3, 1], rotate: [0, -10, 10, 0] } : {}}
+          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.45 }}
         >
           {ok ? "💝" : "🔒"}
         </motion.div>
 
-        <p className="ff-script code-greet">Happy Birthday,</p>
-        <h2 className="ff-serif code-name">{CONFIG.fullName}</h2>
-        <p className="ff-body code-sub">
-          Enter your code to come in.
-        </p>
+        <motion.p
+          className="gate-sub"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.55 }}
+        >
+          enter your secret code to come in
+        </motion.p>
 
-        <div className="code-input-wrap">
-          <input
-            className="ff-body code-input"
-            value={val}
-            onChange={(e) => setVal(e.target.value)}
-            placeholder="Enter your birthday code…"
-            autoComplete="off"
-            spellCheck={false}
-          />
-        </div>
+        <div className="gate-rule" />
+
+        <motion.input
+          className="gate-input"
+          value={val}
+          onChange={(e) => setVal(e.target.value)}
+          placeholder="· · · ·"
+          autoComplete="off"
+          spellCheck={false}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.55 }}
+        />
 
         {CONFIG.codeHint && (
-          <p className={"ff-body code-hint " + (err ? "err" : "")}>
-            {err
-              ? "Hmm, not quite… try again 💗"
-              : "psst — " + CONFIG.codeHint}
-          </p>
+          <motion.p
+            className={"gate-hint " + (err ? "err" : "")}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+          >
+            {err ? "not quite… try again" : CONFIG.codeHint}
+          </motion.p>
         )}
 
-        <PrimaryButton type="submit" className="code-btn">
-          Unlock
-        </PrimaryButton>
+        <motion.div
+          className="gate-submit"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.85, ease }}
+        >
+          <button type="submit" className="btn-solid">Unlock 🔓</button>
+        </motion.div>
       </motion.form>
     </div>
   );

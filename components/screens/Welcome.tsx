@@ -1,72 +1,37 @@
 "use client";
-import { motion } from "framer-motion";
 import { PrimaryButton } from "@/components/Buttons";
 import { PhotoFrame } from "@/components/PhotoFrame";
 import { VideoCard } from "@/components/VideoCard";
 import { STORY } from "@/lib/data";
+import { Reveal } from "./StoryUtils";
 
 const VIDEOS = [
   "https://res.cloudinary.com/dhmqhless/video/upload/v1780596190/ozi_video1_tzd8tx.mp4",
 ];
 
-function Reveal({
-  children,
-  delay = 0,
-  y = 28,
-  className = "",
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  y?: number;
-  className?: string;
-}) {
-  return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.4 }}
-      transition={{ duration: 0.8, delay }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
 export function Welcome({ onNext }: { onNext: () => void }) {
   const s = STORY[0];
 
   return (
-    <div className="screen story-screen">
-      <div className="story-inner">
-        <section className="story-sec">
-          <div className="sec-head">
-            <Reveal>
-              <span className="sec-emoji">{s.emoji}</span>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <p className="ff-script sec-kicker">{s.kicker}</p>
-            </Reveal>
-            <Reveal delay={0.16}>
-              <h2 className="ff-serif sec-title">{s.title}</h2>
-            </Reveal>
-          </div>
+    <div className="story-screen">
+      <div className="story-body">
+        <section className="s-section">
+          <Reveal><span className="s-emoji">{s.emoji}</span></Reveal>
+          <Reveal delay={0.08}><span className="s-eyebrow">{s.kicker}</span></Reveal>
+          <Reveal delay={0.08}><div className="s-rule" /></Reveal>
 
           {s.paras.map((p, i) => (
-            <Reveal key={i} delay={0.05 * i} className="para-wrap">
-              <p className="ff-body para">{p}</p>
+            <Reveal key={i} delay={0.06 * i}>
+              <p className="ff-body s-para">{p}</p>
             </Reveal>
           ))}
 
-          {/* photos */}
           {s.photos && (
-            <div className="photos-block">
+            <div className="s-media">
               {s.photoNote && (
-                <Reveal className="photo-note-wrap">
-                  <p className="ff-script photo-note">{s.photoNote}</p>
-                </Reveal>
+                <Reveal><span className="ff-script s-photo-note">{s.photoNote}</span></Reveal>
               )}
-              <div className="photo-grid">
+              <div className="s-photo-grid">
                 {s.photos.map((p, i) => (
                   <PhotoFrame key={i} caption={p.caption} idx={i} src={p.src} />
                 ))}
@@ -74,12 +39,8 @@ export function Welcome({ onNext }: { onNext: () => void }) {
             </div>
           )}
 
-          {/* videos */}
-          <div className="video-block">
-            <Reveal className="photo-note-wrap">
-              <p className="ff-script photo-note"></p>
-            </Reveal>
-            <div className="video-grid">
+          <div className="s-media">
+            <div className="s-video-grid">
               {VIDEOS.map((url, i) => (
                 <VideoCard key={i} src={url} idx={i} />
               ))}
@@ -87,7 +48,7 @@ export function Welcome({ onNext }: { onNext: () => void }) {
           </div>
         </section>
 
-        <section className="story-sec end-sec">
+        <section className="s-section s-end">
           <Reveal delay={0.1}>
             <PrimaryButton onClick={onNext}>Our Story →</PrimaryButton>
           </Reveal>

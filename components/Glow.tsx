@@ -1,9 +1,9 @@
 export function Glow() {
   return (
-    <div className="glow-wrap" aria-hidden="true">
-      <div className="glow glow-rose" />
-      <div className="glow glow-lav" />
-      <div className="glow glow-gold" />
+    <div className="ambient" aria-hidden="true">
+      <div className="orb orb-a" />
+      <div className="orb orb-b" />
+      <div className="orb orb-c" />
     </div>
   );
 }

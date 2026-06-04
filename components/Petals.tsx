@@ -1,34 +1,26 @@
 "use client";
 import { useMemo } from "react";
 
-interface PetalItem {
-  id: number;
-  left: number;
-  size: number;
-  delay: number;
-  dur: number;
-  drift: number;
-  glyph: string;
-  op: number;
-}
+const GLYPHS = ["🌸", "✿", "❀", "✦", "⭐", "🌺", "✶", "❋", "★", "✽"];
+const COLORS = ["#ff0080", "#ff4da6", "#c026d3", "#a855f7", "#7c3aed", "#e879f9", "#ffffff"];
 
-export function Petals({ count = 18 }: { count?: number }) {
-  const items = useMemo<PetalItem[]>(() => {
-    const glyphs = ["❀", "✿", "♡", "❁", "✦"];
+export function Petals({ count = 22 }: { count?: number }) {
+  const items = useMemo(() => {
     return Array.from({ length: count }).map((_, i) => ({
       id: i,
       left: Math.random() * 100,
-      size: 10 + Math.random() * 20,
-      delay: -Math.random() * 18,
-      dur: 16 + Math.random() * 14,
-      drift: (Math.random() - 0.5) * 60,
-      glyph: glyphs[Math.floor(Math.random() * glyphs.length)],
-      op: 0.12 + Math.random() * 0.25,
+      size: 14 + Math.random() * 18,
+      delay: -Math.random() * 28,
+      dur: 12 + Math.random() * 14,
+      sx: (Math.random() - 0.5) * 120,
+      op: 0.45 + Math.random() * 0.4,
+      glyph: GLYPHS[Math.floor(Math.random() * GLYPHS.length)],
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
     }));
   }, [count]);
 
   return (
-    <div className="petals" aria-hidden="true">
+    <div className="sparkles" aria-hidden="true">
       {items.map((p) => (
         <span
           key={p.id}
@@ -37,8 +29,10 @@ export function Petals({ count = 18 }: { count?: number }) {
             fontSize: `${p.size}px`,
             animationDelay: `${p.delay}s`,
             animationDuration: `${p.dur}s`,
-            ["--drift" as string]: `${p.drift}px`,
+            ["--sx" as string]: `${p.sx}px`,
             opacity: p.op,
+            color: p.color,
+            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.08))",
           }}
         >
           {p.glyph}

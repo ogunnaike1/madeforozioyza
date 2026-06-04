@@ -16,7 +16,7 @@ interface Particle {
   sway: number;
 }
 
-const COLORS = ["#ffffff", "#f4a7b9", "#f8c8d5", "#f7e0b0", "#fff8f0", "#fdeef3", "#e8849a", "#edd8e0"];
+const COLORS = ["#ff0080", "#ff4da6", "#c026d3", "#a855f7", "#7c3aed", "#e879f9", "#ff66b3", "#d946ef"];
 const SHAPES: Shape[] = ["heart", "star", "sparkle", "circle"];
 
 export function Confetti({ run }: { run: boolean }) {

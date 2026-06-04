@@ -8,20 +8,19 @@ import { Reveal, SectionHead, Paras, PullQuote } from "./StoryUtils";
 const STORY_VIDEO = "https://res.cloudinary.com/dhmqhless/video/upload/v1780596187/ozi_video2_vl0e0t.mp4";
 
 export function Story({ onNext }: { onNext: () => void }) {
-  const s = STORY[1]; // "our story"
+  const s = STORY[1];
 
   return (
-    <div className="screen story-screen">
-      <div className="story-inner">
-        <section className="story-sec">
+    <div className="story-screen">
+      <div className="story-body">
+        <section className="s-section">
           <SectionHead s={s} />
           <Paras list={s.paras} />
           {s.quote && <PullQuote>{s.quote}</PullQuote>}
           <Paras list={s.parasAfter} />
 
-          {/* photo */}
-          <div className="photos-block">
-            <div className="photo-grid" style={{ justifyContent: "center" }}>
+          <div className="s-media">
+            <div className="s-photo-grid" style={{ justifyContent: "center" }}>
               <PhotoFrame caption="always her 🌸" idx={0} src="https://res.cloudinary.com/dhmqhless/image/upload/v1780596175/ozi3_nz6cjd.jpg" />
             </div>
           </div>
@@ -29,7 +28,7 @@ export function Story({ onNext }: { onNext: () => void }) {
           <CinematicVideo src={STORY_VIDEO} />
         </section>
 
-        <section className="story-sec end-sec">
+        <section className="s-section s-end">
           <Reveal delay={0.1}>
             <PrimaryButton onClick={onNext}>The Good ☀️</PrimaryButton>
           </Reveal>

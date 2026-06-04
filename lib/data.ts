@@ -5,7 +5,7 @@ export const CONFIG = {
   secretCode: "0506",
   codeHint: "four numbers, your android passcode 😉",
   // Optional: set a URL or path like "/audio/song.mp3" to enable music
-  musicUrl: "https://res.cloudinary.com/dhmqhless/video/upload/f_mp3,q_auto/v1780527339/CHRISTINA_PERRI_-_A_THOUSAND_YEARS_INSTRUMENTAL_i7qngn.mp3",
+  musicUrl: "https://res.cloudinary.com/dhmqhless/video/upload/v1780600078/Ordinary_-_Alex_Warren_lnbhel.mp3",
 };
 
 export interface StorySection {
@@ -53,10 +53,6 @@ export const STORY: StorySection[] = [
     parasAfter: [
       "Every piece of advice you gave me — even the ones I pretended not to listen to — I carried with me. You shaped more of who I am than you probably know.",
       "And I am genuinely grateful that out of all the families in the world, I got to be in yours.",
-    ],
-    photos: [
-      { caption: "Signing out ✍🏾", src: "https://res.cloudinary.com/dhmqhless/image/upload/f_auto,q_auto/v1780325617/kanyin-13.jpeg.HEIC.jpeg_cneo1r.heic" },
-      { caption: "Fully certified 🎓", src: "https://res.cloudinary.com/dhmqhless/image/upload/f_auto,q_auto/v1780325530/kanyin-12.jpeg.HEIC_fhkelc.jpg" },
     ],
     photoNote: "Some things are just meant to be…",
   },
