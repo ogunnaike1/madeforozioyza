@@ -30,7 +30,7 @@ export function Story({ onNext }: { onNext: () => void }) {
 
         <section className="s-section s-end">
           <Reveal delay={0.1}>
-            <PrimaryButton onClick={onNext}>The Good ☀️</PrimaryButton>
+            <PrimaryButton onClick={onNext}>The Beautiful Memories ✨</PrimaryButton>
           </Reveal>
         </section>
       </div>

@@ -20,7 +20,7 @@ export function Good({ onNext }: { onNext: () => void }) {
 
         <section className="s-section s-end">
           <Reveal delay={0.1}>
-            <PrimaryButton onClick={onNext}>The Bad &amp; The Ugly 🌧️</PrimaryButton>
+            <PrimaryButton onClick={onNext}>Through It All 🌧️</PrimaryButton>
           </Reveal>
         </section>
       </div>

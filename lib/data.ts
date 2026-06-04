@@ -5,7 +5,7 @@ export const CONFIG = {
   secretCode: "0506",
   codeHint: "four numbers, your android passcode 😉",
   // Optional: set a URL or path like "/audio/song.mp3" to enable music
-  musicUrl: "https://res.cloudinary.com/dhmqhless/video/upload/v1780600078/Ordinary_-_Alex_Warren_lnbhel.mp3",
+  musicUrl: "https://res.cloudinary.com/dhmqhless/video/upload/v1780608813/SpotiDown.App_-_Stray_Kids_-_Stray_Kids_d5cnxt.mp3",
 };
 
 export interface StorySection {
@@ -58,23 +58,23 @@ export const STORY: StorySection[] = [
   },
   {
     id: "good",
-    kicker: "the good",
-    emoji: "☀️",
-    title: "The memories I'll always carry",
+    kicker: "The Beautiful Memories",
+    emoji: "✨",
+    title: "The ones I keep coming back to",
     paras: [
-      "Growing up with you gave me so much more than I ever said out loud.",
-      "The moments you defended me without thinking twice. The times you let me into your world even when you didn't have to. The way you always seemed to know when something was wrong, even before I said a word.",
-      "You celebrated my wins like they were your own. You pushed me when I was being lazy and held me together when things got hard.",
-      "Those are the kinds of things you don't forget. The kind that quietly shape you into who you are.",
+      "Some moments don't need a photo to stay with you forever. They just live somewhere inside you, showing up quietly on random days.",
+      "The times you made me feel seen without me having to ask. The laughter that came out of nowhere and lasted way too long. The way you showed up — not because you had to, but because that's just who you are.",
+      "You made ordinary moments feel like something worth remembering. And I have kept so many of them.",
+      "These are the memories I smile about when I think of you. The ones that remind me how lucky I am to have a sister like you.",
     ],
     photos: [
       { caption: "radiant, always 🌟", src: "https://res.cloudinary.com/dhmqhless/image/upload/v1780596182/ozi5_eb2rml.jpg" },
     ],
-    photoNote: "These pictures say more than I can…",
+    photoNote: "just her, as she is 🌸",
   },
   {
     id: "bad",
-    kicker: "the bad and ugly",
+    kicker: "Through It All",
     emoji: "🌧️",
     title: "Siblings don't always get it right",
     paras: [
