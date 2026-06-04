@@ -56,11 +56,9 @@ export function CodeGate({ onUnlock, onCorrect }: { onUnlock: () => void; onCorr
 
         <motion.div
           className="gate-icon"
-          animate={ok ? { scale: [1, 1.3, 1], rotate: [0, -10, 10, 0] } : {}}
-          transition={{ duration: 0.6 }}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.45 }}
+          animate={ok ? { opacity: 1, scale: [1, 1.3, 1], rotate: [0, -10, 10, 0] } : { opacity: 1 }}
+          transition={{ duration: 0.7, delay: ok ? 0 : 0.45 }}
         >
           {ok ? "💝" : "🔒"}
         </motion.div>
